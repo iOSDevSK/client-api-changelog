@@ -1,0 +1,1881 @@
+FORMAT: 1A
+# Shipito Client Account API
+You have to send "X-token" header in every request, otherwise you'll get error 403 - {"message":"Invalid token, please provide correct token in header X-token"}
+
+Value for this token you should receive in email with registration.
+First request you have to send is /api/v1/authenticate, it will generate cookie for you with valid session.
+
+Url for all requests is https://client-api.shipito.com/
+
+Example in PHP https://github.com/JakubKohout/shipito-client-api-example
+
+# Group User
+## Login [/api/v1/authenticate]
+### POST
+Authentication request
+
++ Request (application/json)
+
+        {
+            "username": "user@email.com",
+            "password": "passwordIsPassword"
+        }
+
++ Response 200
+
+## Logout [/api/v1/logout]
+### GET
+Logs user out
+
++ Response 200
+
+## Dashboard [/api/v1/dashboard]
+### GET
+Dashboard data
+
++ Response 200 (application/json)
+
+        {
+            "accountInfo": {
+                "mailboxFull": 17,
+                "averageStorageShipito": 14,
+                "averageStorageYou": 67,
+                "spendingLimit": 4000,
+                "spendingLimitUsed": 1000,
+                "spendingLimitRemaining": 3000
+            },
+            "accountBalance": {
+                "deposit": 4040.72,
+                "youWillPay": 120.13,
+                "amountDue": 89.26,
+                "savings": 2748.12
+            },
+            "virtualAddress": [
+                {
+                    "id": 23,
+                    "name": "Minden, NV",
+                    "recommended": true,
+                    "address": {
+                        "name": "John Doe",
+                        "street": "2220 Meridian Blvd",
+                        "suite": "Suite #",
+                        "city": "Minden, NV",
+                        "postalCode": "89423",
+                        "country": "USA"
+                    },
+                    "benefits": [
+                        "The biggest Shipito warehouse. More storage (six times bigger mailbox capacity for free storage compared to California, or double of Oregon)",
+                        "180 days storage for Virtual Mailbox (other locations offer 90 days)",
+                        "Lowest shipping cost for USPS, FedEx and DHL",
+                        "Assisted Purchase is available at this location"
+                    ]
+                },
+                {
+                    "id": 10,
+                    "name": "Tualatin, OR",
+                    "recommended": false,
+                    "address": {
+                        "name": "John Doe",
+                        "street": "11407 SW Amu St.",
+                        "suite": "Suite #",
+                        "city": "Tualatin, OR",
+                        "postalCode": "97062",
+                        "country": "USA"
+                    },
+                    "benefits": [
+                        "No sales tax in Oregon! Save on 7-9% expensive purchases!",
+                        "Full service location",
+                        "More storage space for your Virtual mailbox and shipping rates slightly higher than in California",
+                        "Assisted Purchase is available at this location"
+                    ]
+                },
+                {
+                    "id": 7,
+                    "name": "Torrance, CA",
+                    "recommended": false,
+                    "address": {
+                        "name": "John Doe",
+                        "street": "4310 W. 190th St.",
+                        "suite": "Suite #",
+                        "city": "Torrance, CA",
+                        "postalCode": "90504",
+                        "country": "USA"
+                    },
+                    "benefits": [
+                        "All shipping methods available",
+                        "Consolidation available",
+                        "This location will be discontinued mid 2014",
+                        "Low shipping cost and fast speed due to proximity to LAX airport",
+                        "Assisted Purchase is available at this location"
+                    ]
+                }       
+            ],
+            "shipping": {
+                "address": {
+                    "name": "John Doe",
+                    "company": "John Doe Inc.",
+                    "street": "Example street",
+                    "postalCode": "90505",
+                    "city": "Example city",
+                    "country": "Czech Republic",
+                    "email": "john@example.com",
+                    "phone": "+9607658358"
+                }
+            },
+            "accountSettings": {
+                "box": "A2768",
+                "recieveMagazines": true,
+                "recieveLetters": false,
+                "onePhoto": false,
+                "multiplePhotos": false,
+                "fastMailout": {
+                    "magazines": true,
+                    "letters": false
+                },
+                "newsletter": false
+            },
+            "verification": {
+                "current": 42,
+                "documents": {
+                    "id1": true,
+                    "id2": false,
+                    "utilityBills": true,
+                    "form1583Notarized": true,
+                    "form1583": false
+                }
+            }
+        }
+
+## Other names [/api/v1/other-names]
+### Get list [GET]
+List of user other names
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Jim Example",
+                "address": "Example street 2",
+                "city": "Example City 1",
+                "zip": "15400",
+                "country": "Russia",
+                "phone": "+420720800000",
+                "verify": true,
+                "missingDocuments": []
+            },
+            {
+                "id": 42,
+                "name": "Jane Foo",
+                "address": "Somewhere 132",
+                "city": "Prague",
+                "zip": "15400",
+                "country": "Czech republic",
+                "phone": "+420720820000",
+                "verify": false,
+                "missingDocuments": [
+                    "form1583",
+                    "form1583_notarized",
+                    "id1",
+                    "id2",
+                    "utility",
+                    "other",
+                    "card"
+                ]
+            }
+        ]
+
+### Add other name [POST]
+Add other name
+
++ Request (application/json)
+
+        {
+            "name": "Chrochtos Prdoch",
+            "address": "Main square 3",
+            "city": "Coruscant",
+            "zip": "777GC",
+            "phone": "+232444555111"
+        }
+
++ Response 200
+
+## /api/v1/other-names/{otherNameId}
+### Edit other name [PUT]
+
++ Request (application/json)
+
+        {
+            "name": "Chrochtos Prdoch",
+            "address": "Main square 3",
+            "city": "Coruscant",
+            "zip": "777GC",
+            "phone": "+232444555111"
+        }
+
++ Response 200
+
+### Delete other name [DELETE]
+
+
++ Response 204
+
+## /api/v1/user-info
+### GET
+Basic user info used in navigation bar
+
++ Response 200 (application/json)
+
+        {
+            "boxNo": "A2768",
+            "balance": {
+                "deposit": 3428.12,
+                "total": 1104.85,
+                "due": 0
+            },
+            "email": "email@example.com",
+            "status": "gold",
+            "statusPercentage": 60,
+            "inWarehousePackagesCount": 34,
+            "sentPackagesCount": 113,
+            "unreadedNews": 0
+        }
+
+## /api/v1/settings/general
+### GET
+Returns user general settings
+
++ Response 200 (application/json)
+
+        {
+            "receiveMagazines": true,
+            "receiveLetters": true,
+            "onePhoto": false,
+            "multiplePhotos": false,
+            "fastMailout": {
+                "magazines": true,
+                "letters": true
+            },
+            "newsletter": true
+        }
+        
+### POST
+Set user general settings
+
++ Request (application/json)
+
+        {
+            "receiveMagazines": true,
+            "receiveLetters": true,
+            "onePhoto": false,
+            "multiplePhotos": false,
+            "fastMailout": {
+                "magazines": true,
+                "letters": true
+            },
+            "newsletter": true
+        }
+
++ Response 200
+    + Headers
+
+            Content-type: application/json
+
+    + Body
+
+            {
+                "code": 0
+            }
+
+## /api/v1/settings/change-password
+### POST
+Change password
+
++ Request (application/json)
+
+        {
+            "oldPassword": "123456"
+            "newPassword": "987654321"
+        }
+
++ Response 200
+    + Headers
+
+            Content-type: application/json
+
+    + Body
+
+            {
+                "code": 0
+            }
+
+## /api/v1/settings/change-email
+### POST
+Change email
+
++ Request (application/json)
+
+        {
+            "email": "new-email@example.com",
+            "password": "123456"
+        }
+
++ Response 200
+    + Headers
+
+            Content-type: application/json
+
+    + Body
+
+            {
+                "code": 0
+            }
+
+## /api/v1/transactions
+### GET
+Transaction statement
+
++ Response 200 (application/json)
+
+        [
+            {
+                "amount": 1423.89,
+                "comment": "Initial Deposit",
+                "date": 1279664150000,
+                "subtotal": 1423.89
+            },
+            {
+                "amount": -15,
+                "comment": "Mailout of package <b>21732-CY</b>",
+                "date": 1279908681000,
+                "subtotal": 1423.89
+            },
+            {
+                "amount": 0,
+                "comment": "Undo mailout of package <b>21732-CY</b>",
+                "date": 1279908717000,
+                "subtotal": 1593.72
+            }
+        ]
+
+# Group Deposit
+## /api/v1/deposits
+### POST
+Create a deposit order
+
++ Request (application/json)
+
+        {
+            "amount": 10
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id": "1951185",
+            "amount": 16,
+            "paymentMethods": {
+                "creditCard": true,
+                "paypal": true,
+                "wireTransfer": true,
+                "shipitoPartner": true
+            }
+        }
+
+## /api/v1/deposits/{orderId}/paypal-payment
+### POST
+Pay deposit by PayPal
+
++ Request (application/json)
+
+        {
+            "amount": 10
+        }
+
++ Response 204
+
+## /api/v1/deposits/{orderId}/shipito-partner-payment
+### POST
+Pay deposit by Shipito Partner
+
++ Request (application/json)
+
+        {
+            "amount": 10
+        }
+
++ Response 204
+
+## /api/v1/deposits/{orderId}/wire-transfer-payment
+### POST
+Pay deposit by wire transfer
+
++ Request (application/json)
+
+        {
+            "amount": 10
+        }
+
++ Response 204
+
+# Group Issues
+## /api/v1/issues
+### GET
+List of posted claims/issues
+
++ Response 200 (application/json)
+
+        [
+            {
+                "trackingNo": "13245648318434",
+                "date": 1279664150000,
+                "systemResponse": "Package entered as your package 00-CJ",
+                "ourResponse": ""
+            },
+            {
+                "trackingNo": "686986543543465464",
+                "date": 1279664150000,
+                "systemResponse": "",
+                "ourResponse": "We are charging you additional fee $5 for claim TTOORIWKDKSJK (asdfsadfads). The amount was deducted from your deposit. Reason: testing fee"
+            },
+            {
+                "trackingNo": "989833543536534",
+                "date": 1279664150000,
+                "systemResponse": "Closed by Client. Comment: ddd ",
+                "ourResponse": ""
+            },
+            {
+                "trackingNo": "5434524784284728757",
+                "date": 1279664150000,
+                "systemResponse": "",
+                "ourResponse": "Not a valid tracking number"
+            },
+            {
+                "trackingNo": "24524242842432843",
+                "date": 1279664150000,
+                "systemResponse": "Package entered as your package 00-CJ",
+                "ourResponse": ""
+            }
+        ]
+
+### POST
+Save a new issue
+
++ Request (application/json)
+
+        {
+            "packageId": "RV",
+            "comment": "comment",
+            "trackingNo": null,
+            "shopName": null,
+            "type": "not_delivered_client"
+        }
+
++ Response 204
+
+## /api/v1/issues/new
+### GET
+List of packages to which a claim/issue can be posted
+
++ Response 200 (application/json)
+
+        [
+            {
+                "packages": ["LP", "MB", "PO", "JK", "DC", "DM", "TK", "XP"]
+            }
+        ]
+
+## /api/v1/issues/package-detail/{letterId}
+### GET
+Package details needed for creating an issue
+
++ Response 200 (application/json)
+
+        {
+            "id": "F",
+            "boxNo": "A2768",
+            "sent": 1283820705000,
+            "shippingMethod": "SHIPITO_TRUCK",
+            "trackingNo": "",
+            "claims": {
+                "damaged_missing_items": {
+                    "possible": false,
+                    "errorCode": 0
+                },
+                "not_delivered_client": {
+                    "possible": true,
+                    "errorCode": null
+                }
+            }
+        }
+
+# Group News
+## /api/v1/news
+### GET
+News
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "title": "Happy Thanksgiving!",
+                "date": 1279664150000,
+                "text": "We'll be closed on Thanksgiving (Thursday, November 28th, 2013). Business will resume like normal on Friday, November 29th, 2013. Thank you for your business",
+                "unread": false
+            },
+            {
+                "id": 2,
+                "title": "Airsoft guns, toy guns",
+                "date": 1279664150000,
+                "text": "Starting November 22nd, 2013, TNT will not accept any shipment that contains airsoft guns, paintball guns or any type of replica toy guns. DHL, FedEx may still accept the shipment but please find out from your country's custom first for regulation as well. Thank you",
+                "unread": true
+            },
+            {
+                "id": 3,
+                "title": "Airmail doesn't accept lithium batteries",
+                "date": 1279664150000,
+                "text": "Airmail shipping method doesn't accept lithium batteries effective immediately. For lithium battery shipments please use alternative shipping methods like USPS Priority or Express.",
+                "unread": true
+            }
+        ]
+
+## /api/v1/seen-news
+### POST
+Set last seen news
+
++ Request (application/json)
+
+        {
+            "id": 215
+        }
+
++ Response 204
+
+# Group Benefits
+## /api/v1/benefits
+### GET
+List of user benefits
+
++ Response 200
+    + Headers
+
+            Content-type: application/json
+
+    + Body
+
+            {
+                "points": 15.59,
+                "benefits": [
+                    {
+                        "id": 123,
+                        "description": "FedEx Priority: 5% Discount from Tualatin, OR warehouse",
+                        "availableUntil": 1279664150000,
+                        "warehouse": {
+                            "id": 123, 
+                            "name": "Tualatin", 
+                            "state": "CA"
+                        },
+                        "shippingCountry": {
+                            "id": 123, 
+                            "name": "Brazil"
+                        }
+                    },
+                    {
+                        "id": 124,
+                        "description": "FedEx Priority: 10% Discount from Tualatin, OR warehouse",
+                        "availableUntil": 1279664150000,
+                        "warehouse": null,
+                        "shippingCountry": null
+                    }
+                ]
+            }
+
+## /api/v1/benefits/select
+### POST
+Select
+
++ Request (application/json)
+
+        {
+            "id": 123
+        }
+
++ Response 200 (application/json)
+
+        []
+
+# Group Packages
+## /api/v1/packages?filter=in-warehouse
+### GET
+List packages which are in a warehouse
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "letterId": "A",
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "status": "check-status",
+                "dimensions": {
+                    "width": 404,
+                    "height": 42,
+                    "length": 46
+                },
+                "deliveryDate": 1378788198,
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": "",
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
+                "totalPrice": 666,
+                "isConsolidation": true,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "letterId": "ABC",
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "status": "check-status",
+                "dimensions": {
+                    "width": 10,
+                    "height": 15,
+                    "length": 15
+                },
+                "deliveryDate": 1378788198,
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": "",
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
+                "totalPrice": 132,
+                "isConsolidation": false,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "letterId": "BC",
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "status": "ready-to-send",
+                "dimensions": {
+                    "width": 10,
+                    "height": 15,
+                    "length": 15
+                },
+                "deliveryDate": 1378788198,
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": "",
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
+                "totalPrice": 132,
+                "isConsolidation": false,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "letterId": "DB",
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "status": "ready-to-send",
+                "dimensions": {
+                    "width": 0,
+                    "height": 0,
+                    "length": 0
+                },
+                "deliveryDate": 1378788198,
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": "",
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
+                "totalPrice": 132,
+                "isConsolidation": false,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "letterId": "XO",
+                "warehouse": {
+                    "id": 20,
+                    "name": "Hawthorne, CA"
+                },
+                "status": "in-transit",
+                "dimensions": {
+                    "width": 10,
+                    "height": 15,
+                    "length": 15
+                },
+                "deliveryDate": 1378788198,
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": null,
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
+                "totalPrice": 132,
+                "isConsolidation": false,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            }
+        ]
+
+## /api/v1/packages?filter=sent-packages
+### GET
+List packages which have been already sent
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 666,
+                "letterId": "TK",
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "status": "mailed",
+                "dimensions": {
+                    "width": 100,
+                    "height": 200,
+                    "length": 300
+                },
+                "deliveryDate": 1381363200000,
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": "SAE00000000000000",
+                "totalPrice": 132,
+                "isConsolidation": true,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            },
+            {
+                "id": 666,
+                "letterId": "PO",
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "status": "mailed",
+                "dimensions": {
+                    "width": 100,
+                    "height": 200,
+                    "length": 300
+                },
+                "deliveryDate": 1381363200000,
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": "SAE123232334324",
+                "totalPrice": 132,
+                "isConsolidation": false,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            },
+            {
+                "id": 888,
+                "letterId": "PQ",
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "status": "delivered",
+                "dimensions": {
+                    "width": 100,
+                    "height": 200,
+                    "length": 300
+                },
+                "deliveryDate": 1378788198000,
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",     
+                "trackingNumber": "1Z7F382V0215698550",
+                "outgoingTrackingNumber": "SAE98765432",
+                "totalPrice": 132,
+                "isConsolidation": false,
+                "photos": [
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    },
+                    {
+                        "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                        "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                        "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                    }
+                ]
+            }
+        ]
+
+## /api/v1/packages/{letterId}
+### GET
+Get a single package
+thumbnail: 63x50
+small: 120x90
+large: 820x535
+Transfer: TRANSFER_NOT_SCHEDULED | TRANSFER_SCHEDULED | IN_TRANSIT
+tollPackageType: gift | merchandise
+status: delivered | mailed | in-transit | ready-to-send | check-status
+
++ Response 200 (application/json)
+
+        {
+            "id": 12354,
+            "letterId": "BC",
+            "mailbox": "A2768",
+            "location":  {
+                "id": 7,
+                "name": "Columbia",
+                "address": "2972 Columbia St.",
+                "city": "Torrance",
+                "state": "CA",
+                "zip": "90503",
+                "country": "US"
+            },
+            "totalPrice": 1250,
+            "totalPriceWithoutDiscount": 1250,
+            "priceDetail": {
+                "processingFee": 1,
+                "repackingFee": 1,
+                "postage": 1,
+                "postageDetail": {
+                    "carrier": 1,
+                    "bankFee": 1
+                },
+                "insurance": 1
+            },
+            "information": {
+                "dimensions": {
+                    "width": 100,
+                    "height": 200,
+                    "length": 300
+                },
+                "weight": 7.12,
+                "deliveryDate": 1380647532000,
+                "availableStorage": 70,
+                "incommingTrackingNumber": "201113554689AC65434",
+                "recepientName": "Alexander Sergeyeich",
+                "transportCost": 42,
+                "outgoingTrackingNumber": "1020388026147340100767",
+                "mailedOut": 1380647532000,
+                "mailedOutBy": "David Cap"
+            },
+            "photos": [
+                {
+                    "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/01-thumb.png",
+                    "small": "https://dl.dropboxusercontent.com/u/7235369/photos/01-small.png",
+                    "large": "https://dl.dropboxusercontent.com/u/7235369/photos/01-big.png"
+                },
+                {
+                    "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/02-thumb.png",
+                    "small": "https://dl.dropboxusercontent.com/u/7235369/photos/02-small.png",
+                    "large": "https://dl.dropboxusercontent.com/u/7235369/photos/02-big.png"
+                },
+                {
+                    "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/03-thumb.png",
+                    "small": "https://dl.dropboxusercontent.com/u/7235369/photos/03-small.png",
+                    "large": "https://dl.dropboxusercontent.com/u/7235369/photos/03-big.png"
+                },
+                {
+                    "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                    "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                    "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                },
+                {
+                    "thumbnail": "https://dl.dropboxusercontent.com/u/7235369/photos/04-thumb.png",
+                    "small": "https://dl.dropboxusercontent.com/u/7235369/photos/04-small.png",
+                    "large": "https://dl.dropboxusercontent.com/u/7235369/photos/04-big.png"
+                }
+            ],
+            "customsDeclaration": {
+              "numberOfItems": 12,
+              "totalValue": 122,
+              "tollPackageType": "gift",
+              "items": [
+                    {
+                        "quantity": 1,
+                        "description": "Audi RS5",
+                        "origin": "DE",
+                        "hscode": "",
+                        "value": 10
+                    },
+                    {
+                        "quantity": 2,
+                        "description": "Audi A4",
+                        "origin": "DE",
+                        "hscode": "",
+                        "value": 10
+                    }
+                ]
+            },
+            "shipping": {
+                "address": {
+                    "name": "Tom Doo",
+                    "company": null,
+                    "taxId": null,
+                    "street": "Example street",
+                    "city": "Prague",
+                    "zip": "15400",
+                    "state": "",
+                    "country": {
+                        "iso": "CZ",
+                        "name": "Czech Republic"
+                    },
+                    "phone": "+420344555788"
+                },
+                "method": {
+                    "id": 8, 
+                    "name": "Fedex 2Day"
+                },
+                "insurance": "Delivery and Damage"
+            },
+            "specialRequests": [
+                {
+                    "message": "10 Photos",
+                    "fee": 20.5,
+                    "status": "pending"
+                },
+                {
+                    "message": "Asdf dlouhej text aby se nereklo",
+                    "fee": 8.5,
+                    "status": "canceled"
+                },
+                {
+                    "message": "Destroy packages",
+                    "fee": 0.0,
+                    "status": "completed"
+                }
+            ],
+            "status": "delivered",
+            "note": "My note",
+            "flags": {
+                "contentPhotos": true,
+                "customsDeclarationFilled": true,
+                "mailoutScheduled": false,
+                "shippingMethodSelected": false,
+                "transportPending": false,
+                "transportScheduled": false
+            },
+            "exceptions": [
+                "exception1",
+                "exception2"
+            ]
+        }
+
+## /api/v1/packages/{letterId}/confirm-delivery
+### POST
+Confirms delivery of a package to a customer
+
++ Request (application/json)
+
+        {
+            "customsFees": 42,
+            "dateDelivered": 194853423406,
+            "happyWithCarrier": true,
+            "happyWithShipito": true,
+            "comment": "Lorem ipsum dolor sit bacon."
+        }
+
++ Response 200
+
+## /api/v1/packages/{packageId}/mailout
+### POST
+Request mailout
+
++ Response 200
+
+### DELETE
+Cancel mailout
+
++ Response 200
+
+## /api/v1/packages/{packageId}/note
+### POST
+Set note
+
++ Request
+    + Headers
+
+            Conten-Type: application/json
+
+    + Body
+
+            {
+                "note": "Comment of package"
+            }
+
++ Response 200
+
+## /api/v1/packages/{packageId}/customs-declaration
+### GET
+Gets customs declaration of given package
+
++ Response 200 (application/json)
+
+        {
+            "items": [
+                { "quantity": 1, "description": "Kindle", "origin": "US", "hscode": 1256, "value": 100 },
+                { "quantity": 3, "description": "KitKat", "origin": "US", "hscode": 1111, "value": 251 },
+                { "quantity": 2, "description": "iPad", "origin": "CZ", "hscode": 1200, "value": 499 },
+                { "quantity": 1, "description": "iPhone", "origin": "US", "hscode": 5656, "value": 50 }
+            ],
+            "type": "gift",
+            "batteries": {
+                "PI966": true,
+                "PI967": true,
+                "PI965": true
+            }
+        }
+
+### POST
+Updates customs declaration for given package
+
++ Request (application/json)
+
+        {
+            "items": [
+                { "quantity": 2, "description": "Kindle", "origin": "US", "hscode": 1256, "value": 230},
+                { "quantity": 1, "description": "iPhone", "origin": "US", "hscode": 5656, "value": 50 }
+            ],
+            "type": "gift|merchandise",
+            "batteries": {
+                "PI966": true,
+                "PI967": true,
+                "PI965": true
+            }
+        }
+
++ Response 201
+
+## /api/v1/packages/{letterId}/shipping-address
+### POST
+Updates shipping address for given package
+
++ Request (application/json)
+
+        {
+            "name": "John Doe",
+            "company": "",
+            "taxId": "",
+            "street": "Example street 123",
+            "zip": "15400",
+            "city": "Praha",
+            "state": "",
+            "country": {
+                "iso": "CZ",
+                "name": "Czech republic"
+            },
+            "phone": "+420111000111",
+            "reason": ""
+        }
+
++ Response 200
+
+## /api/v1/packages/{letterId}/special-requests
+### GET
+List specific requests which are available for given package
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Send this package separately",
+                "desc": "We will not merge this package with any other package, and we will send it to you separately as soon as possible.<br /><br />Note: This process is standard for Individual packages.",
+                "fee": 8.50,
+                "status": "pending"
+            },
+            {
+                "id": 2,
+                "name": "Express processing",
+                "desc": "We will process mailout, special instruction or consolidation in preference.",
+                "fee": 8.50,
+                "status": "available"
+            },
+            {
+                "id": 3,
+                "name": "Fill Customs declaration",
+                "desc": "We will open the package, and according to invoice, we will fill customs declaration. If there is no invoice in the package, we will fill only content description.",
+                "fee": 8.50,
+                "status": "available"
+            },
+            {
+                "id": 4,
+                "name": "Fill Customs declaration",
+                "desc": "We will open the package, and according to invoice, we will fill customs declaration. If there is no invoice in the package, we will fill only content description.",
+                "fee": 8.50,
+                "status": "canceled"
+            }
+        ]
+
+### POST
+Creates specific requests for given package
+
++ Request (application/json)
+
+        {
+            "requestIds": [4, 6, 9],
+            "mistakeReport": "Mistake report",
+            "otherInstruction": "Draw a dinosaur on the package please!"
+        }
+
++ Response 200
+
+## /api/v1/packages/{id}/shipping-methods
+### GET
+Gets a list of available shipping methods for given package
+
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "USPS Express Mail",
+                "alias": "EXPRESS",
+                "shippingRate": 59.87,
+                "insuranceRate": 1.3,
+                "additionalInsurance": {
+                    "rate": 1,
+                    "requiredFor": "Watches, jewelry, mobile phones, computers, tablets, all electronics with battery"
+                },
+                "isPromoted": true,
+                "delivery": {
+                    "inDays": 6,
+                    "inWords": "5-6 business days"
+                },
+                "popularity": 1,
+                "logo": "usps-express"
+            },
+            {
+                "name": "USPS Priority Mail",
+                "alias": "PRIORITY",
+                "shippingRate": 47.4,
+                "insuranceRate": 3.16,
+                "additionalInsurance": {
+                    "rate": 1,
+                    "requiredFor": "Watches, jewelry, mobile phones, computers, tablets, all electronics with battery"
+                },
+                "isPromoted": true,
+                "delivery": {
+                    "inDays": 10,
+                    "inWords": "6-10 business days"
+                },
+                "popularity": 2,
+                "logo": "usps-priority"
+            }
+        ]
+
+## /api/v1/packages/{letterId}/shipping-methods
+### POST
+Selects shipping method for given package
+
++ Request (application/json)
+
+        {
+            "shippingMethod": 'EXPRESS',
+            "insurance": "delivery",
+            "additionalInsurance": false
+        }
+
++ Response 200
+
+## /api/v1/packages/{letterId}/transport
+### POST
+Request package transfer to another warehouse
+
++ Request (application/json)
+
+        {
+            "locationId": 5,
+            "shippingMethod": 1337,
+            "insurance": "delivery",
+            "additionalInsurance": false
+        }
+
++ Response 200
+
+### DELETE
+Cancel transfer of a package into another warehouse
+
++ Response 200
+
+## /api/v1/packages/{letterId}/transport-shipping-rates/{locationId}
+### GET
+Get rates for moving a package into a different warehouse
+
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "Shipito Truck",
+                "alias": "SHIPITO_TRUCK",
+                "shippingRate": 9.75,
+                "insuranceRate": 2.44,
+                "additionalInsurance": {
+                    "rate": 0,
+                    "requiredFor": ""
+                },
+                "isPromoted": true,
+                "delivery": {
+                    "inDays": 10,
+                    "inWords": "7-10 business days"
+                },
+                "popularity": 1,
+                "logo": "shipito-truck"
+            }
+        ]
+
+# Group Countries
+## /api/v1/countries
+### GET
+List of countries (used for selectbox)
+
++ Response 200 (application/json)
+
+        [{"iso": "AF","name": "Afghanistan"},{"iso": "AL","name": "Albania"},{"iso": "DZ","name": "Algeria"},{"iso": "AD","name": "Andorra"},{"iso": "AO","name": "Angola"},{"iso": "AI","name": "Anguilla"},{"iso": "AG","name": "Antigua and Barbuda"},{"iso": "AR","name": "Argentina"},{"iso": "AM","name": "Armenia"},{"iso": "AW","name": "Aruba"},{"iso": "AU","name": "Australia"},{"iso": "AT","name": "Austria"},{"iso": "AZ","name": "Azerbaijan"},{"iso": "BS","name": "Bahamas"},{"iso": "BH","name": "Bahrain"},{"iso": "BD","name": "Bangladesh"},{"iso": "BB","name": "Barbados"},{"iso": "BY","name": "Belarus"},{"iso": "BE","name": "Belgium"},{"iso": "BZ","name": "Belize"},{"iso": "BJ","name": "Benin"},{"iso": "BM","name": "Bermuda"},{"iso": "BT","name": "Bhutan"},{"iso": "BO","name": "Bolivia"},{"iso": "BA","name": "Bosnia-Herzegovina"},{"iso": "BW","name": "Botswana"},{"iso": "BR","name": "Brazil"},{"iso": "VG","name": "British Virgin Islands"},{"iso": "BN","name": "Brunei Darussalam"},{"iso": "BG","name": "Bulgaria"},{"iso": "BF","name": "Burkina Faso"},{"iso": "BI","name": "Burundi"},{"iso": "KH","name": "Cambodia"},{"iso": "CM","name": "Cameroon"},{"iso": "CA","name": "Canada"},{"iso": "CV","name": "Cape Verde"},{"iso": "KY","name": "Cayman Islands"},{"iso": "CF","name": "Central African Republic"},{"iso": "TD","name": "Chad"},{"iso": "CL","name": "Chile"},{"iso": "CN","name": "China"},{"iso": "CO","name": "Colombia"},{"iso": "KM","name": "Comoros"},{"iso": "CD","name": "Congo, Democratic Republic of the"},{"iso": "CG","name": "Congo, Republic of the"},{"iso": "CR","name": "Costa Rica"},{"iso": "HR","name": "Croatia"},{"iso": "CY","name": "Cyprus"},{"iso": "CZ","name": "Czech Republic"},{"iso": "DK","name": "Denmark"},{"iso": "DJ","name": "Djibouti"},{"iso": "DM","name": "Dominica"},{"iso": "DO","name": "Dominican Republic"},{"iso": "EC","name": "Ecuador"},{"iso": "EG","name": "Egypt"},{"iso": "SV","name": "El Salvador"},{"iso": "GQ","name": "Equatorial Guinea"},{"iso": "ER","name": "Eritrea"},{"iso": "EE","name": "Estonia"},{"iso": "ET","name": "Ethiopia"},{"iso": "FO","name": "Faroe Islands"},{"iso": "FJ","name": "Fiji"},{"iso": "FI","name": "Finland"},{"iso": "FR","name": "France"},{"iso": "GF","name": "French Guiana"},{"iso": "PF","name": "French Polynesia"},{"iso": "GA","name": "Gabon"},{"iso": "GM","name": "Gambia"},{"iso": "GE","name": "Georgia, Republic of"},{"iso": "DE","name": "Germany"},{"iso": "GH","name": "Ghana"},{"iso": "GI","name": "Gibraltar"},{"iso": "GB","name": "Great Britain and Northern Ireland"},{"iso": "GR","name": "Greece"},{"iso": "GL","name": "Greenland"},{"iso": "GD","name": "Grenada"},{"iso": "GP","name": "Guadeloupe"},{"iso": "GU","name": "Guam"},{"iso": "GT","name": "Guatemala"},{"iso": "GN","name": "Guinea"},{"iso": "GW","name": "Guinea-Bissau"},{"iso": "GY","name": "Guyana"},{"iso": "HT","name": "Haiti"},{"iso": "HN","name": "Honduras"},{"iso": "HK","name": "Hong Kong"},{"iso": "HU","name": "Hungary"},{"iso": "IS","name": "Iceland"},{"iso": "IN","name": "India"},{"iso": "ID","name": "Indonesia"},{"iso": "IQ","name": "Iraq"},{"iso": "IE","name": "Ireland"},{"iso": "IL","name": "Israel"},{"iso": "IT","name": "Italy"},{"iso": "CI","name": "Ivory Coast"},{"iso": "JM","name": "Jamaica"},{"iso": "JP","name": "Japan"},{"iso": "JO","name": "Jordan"},{"iso": "KZ","name": "Kazakhstan"},{"iso": "KE","name": "Kenya"},{"iso": "KR","name": "Korea, Republic of (South Korea)"},{"iso": "XZ","name": "Kosovo, Republic of"},{"iso": "KW","name": "Kuwait"},{"iso": "KG","name": "Kyrgyzstan"},{"iso": "LA","name": "Laos"},{"iso": "LV","name": "Latvia"},{"iso": "LB","name": "Lebanon"},{"iso": "LS","name": "Lesotho"},{"iso": "LR","name": "Liberia"},{"iso": "LY","name": "Libya"},{"iso": "LI","name": "Liechtenstein"},{"iso": "LT","name": "Lithuania"},{"iso": "LU","name": "Luxembourg"},{"iso": "MO","name": "Macao"},{"iso": "MK","name": "Macedonia, Republic of"},{"iso": "MG","name": "Madagascar"},{"iso": "MW","name": "Malawi"},{"iso": "MY","name": "Malaysia"},{"iso": "MV","name": "Maldives"},{"iso": "ML","name": "Mali"},{"iso": "MT","name": "Malta"},{"iso": "MQ","name": "Martinique"},{"iso": "MR","name": "Mauritania"},{"iso": "MU","name": "Mauritius"},{"iso": "MX","name": "Mexico"},{"iso": "FM","name": "Micronesia (federated states)"},{"iso": "MD","name": "Moldova"},{"iso": "MN","name": "Mongolia"},{"iso": "ME","name": "Montenegro"},{"iso": "MS","name": "Montserrat"},{"iso": "MA","name": "Morocco"},{"iso": "MZ","name": "Mozambique"},{"iso": "NA","name": "Namibia"},{"iso": "NR","name": "Nauru"},{"iso": "NP","name": "Nepal"},{"iso": "NL","name": "Netherlands"},{"iso": "AN","name": "Netherlands Antilles"},{"iso": "NC","name": "New Caledonia"},{"iso": "NZ","name": "New Zealand"},{"iso": "NI","name": "Nicaragua"},{"iso": "NE","name": "Niger"},{"iso": "NG","name": "Nigeria"},{"iso": "NO","name": "Norway"},{"iso": "OM","name": "Oman"},{"iso": "PK","name": "Pakistan"},{"iso": "PA","name": "Panama"},{"iso": "PG","name": "Papua New Guinea"},{"iso": "PY","name": "Paraguay"},{"iso": "PE","name": "Peru"},{"iso": "PH","name": "Philippines"},{"iso": "PN","name": "Pitcairn Island"},{"iso": "PL","name": "Poland"},{"iso": "PT","name": "Portugal"},{"iso": "PR","name": "Puerto Rico"},{"iso": "QA","name": "Qatar"},{"iso": "RE","name": "Reunion"},{"iso": "RO","name": "Romania"},{"iso": "RU","name": "Russia"},{"iso": "RW","name": "Rwanda"},{"iso": "KN","name": "Saint Christopher (St. Kitts) and Nevis"},{"iso": "SH","name": "Saint Helena"},{"iso": "LC","name": "Saint Lucia"},{"iso": "PM","name": "Saint Pierre and Miquelon"},{"iso": "VC","name": "Saint Vincent and the Grenadines"},{"iso": "SM","name": "San Marino"},{"iso": "ST","name": "Sao Tome and Principe"},{"iso": "SA","name": "Saudi Arabia"},{"iso": "SN","name": "Senegal"},{"iso": "RS","name": "Serbia, Republic of"},{"iso": "SC","name": "Seychelles"},{"iso": "SL","name": "Sierra Leone"},{"iso": "SG","name": "Singapore"},{"iso": "SK","name": "Slovak Republic (Slovakia)"},{"iso": "SI","name": "Slovenia"},{"iso": "SB","name": "Solomon Islands"},{"iso": "ZA","name": "South Africa"},{"iso": "ES","name": "Spain"},{"iso": "LK","name": "Sri Lanka"},{"iso": "SD","name": "Sudan"},{"iso": "SR","name": "Suriname"},{"iso": "SZ","name": "Swaziland"},{"iso": "SE","name": "Sweden"},{"iso": "CH","name": "Switzerland"},{"iso": "SY","name": "Syrian Arab Republic (Syria)"},{"iso": "TW","name": "Taiwan"},{"iso": "TJ","name": "Tajikistan"},{"iso": "TZ","name": "Tanzania"},{"iso": "TH","name": "Thailand"},{"iso": "TG","name": "Togo"},{"iso": "TO","name": "Tonga"},{"iso": "TT","name": "Trinidad and Tobago"},{"iso": "TA","name": "Tristan da Cunha"},{"iso": "TN","name": "Tunisia"},{"iso": "TR","name": "Turkey"},{"iso": "TM","name": "Turkmenistan"},{"iso": "TC","name": "Turks and Caicos Islands"},{"iso": "TV","name": "Tuvalu"},{"iso": "UG","name": "Uganda"},{"iso": "UA","name": "Ukraine"},{"iso": "AE","name": "United Arab Emirates"},{"iso": "UY","name": "Uruguay"},{"iso": "US","name": "USA"},{"iso": "UZ","name": "Uzbekistan"},{"iso": "VU","name": "Vanuatu"},{"iso": "VA","name": "Vatican City"},{"iso": "VE","name": "Venezuela"},{"iso": "VN","name": "Vietnam"},{"iso": "VI","name": "Virgin Islands"},{"iso": "WF","name": "Wallis and Futuna Islands"},{"iso": "WS","name": "Western Samoa"},{"iso": "YE","name": "Yemen"},{"iso": "ZM","name": "Zambia"},{"iso": "ZW","name": "Zimbabwe"}]
+
+# Group Warehouses
+## /api/v1/warehouses
+### GET
+List of shipito warehouses
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "7",
+                "name": "Torrance, CA",
+                "desc": "Desc"
+            },
+            {
+                "id": "20",
+                "name": "Hawthorne, CA",
+                "desc": "Desc"
+            },
+            {
+                "id": "24",
+                "name": "Hawthorne 2, CA",
+                "desc": "Desc"
+            },
+            {
+                "id": "10",
+                "name": "Tualatin, OR",
+                "desc": "Desc"
+            },
+            {
+                "id": "23",
+                "name": "Minden, NV",
+                "desc": "Desc"
+            }
+        ]
+
+# Group Consolidation Packages
+## /api/v1/consolidations
+### GET
+List of all (new/sent/cancelled) consolidation packages
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "date": "1378788198000",
+                "packages": ["LP", "QR", "PO", "ST", "LM"],
+                "status": "NEW",
+                "isContinuous": true
+            },
+            {
+                "id": 99,
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "date": "1378788198",
+                "packages": ["LP", "QR", "PO", "ST", "LM"],
+                "status": "CANCELED",
+                "isContinuous": false
+            },
+            {
+                "id": 69,
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "date": "1378788198",
+                "packages": ["TK", "DM", "DC", "JK"],
+                "status": "PENDING",
+                "isContinuous": false
+            },
+            {
+                "id": 66,
+                "warehouse": {
+                    "id": 7,
+                    "name": "Torrance, CA"
+                },
+                "date": "1378788198",
+                "packages": ["JK", "MK", "BK"],
+                "status": "DONE",
+                "isContinuous": false
+            }
+        ]
+
+### POST
+Create a consolidation package
+
++ Request (application/json)
+
+        {
+            "packages": [
+                {
+                    "id": "RG",
+                    "packaging": "a"
+                },
+                {
+                    "id": "RS",
+                    "packaging": "b"
+                }
+            ],
+            "afterConsolidation": "SEND_IMMEDIATELY",
+            "box": {
+                "size": "26_13_13",
+                "otherSize": "",
+                "returnToMailboxIfDoesNotFit": true
+            },
+            "specialRequest": "Lorem ipsum",
+            "shipping": {
+                "method": "TNT_EXPRESS",
+                "insurance": true,
+                "address": {
+                    "company": "",
+                    "taxId": "",
+                    "name": "John Doe",
+                    "street": "Example street",
+                    "zip": "15400",
+                    "city": "Praha",
+                    "country": {
+                        "iso": "CZ",
+                        "name": "Czech republic"
+                    },
+                    "state": "",
+                    "phone": "+420 344555788",
+                    "reason": ""
+                }
+            } 
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 54
+        }
+
+## /api/v1/consolidations/{consolidationNumber}?edit=true
+### GET
+Detail request for edit
+
++ Response 200 (application/json)
+
+        {
+            "packages": [
+                {
+                    "id": "RR",
+                    "weight": 1,
+                    "totalValue": 2,
+                    "warehouse": 7,
+                    "openConsolidation": true,
+                    "customsDeclaration": true,
+                    "mailoutScheduled": false,
+                    "contains": [
+                        "QP",
+                        "QR"
+                    ],
+                    "size": "26_13_13"
+                },
+            ],
+            "warehouses": [
+                {
+                    "id": 7,
+                    "name": "Torrance"
+                },
+                {
+                    "id": 18,
+                    "name": "Torrance II"
+                },
+                {
+                    "id": 24,
+                    "name": "Hawthorne 2"
+                }
+            ],
+            "availableShippingMethods": [
+                {
+                    "name": "USPS Express Mail",
+                    "id": "EXPRESS"
+                },
+                {
+                    "name": "USPS Priority Mail",
+                    "id": "PRIORITY"
+                },
+                {
+                    "name": "Airmail Priority",
+                    "id": "XPO_PRIORITY"
+                },
+                {
+                    "name": "FedEx Economy",
+                    "id": "FEDEX_ECONOMY"
+                },
+                {
+                    "name": "FedEx Priority",
+                    "id": "FEDEX_PRIORITY"
+                },
+                {
+                    "name": "DHL Express",
+                    "id": "DHL_EXPRESS"
+                },
+                {
+                    "name": "TNT Express",
+                    "id": "TNT_EXPRESS"
+                }
+            ],
+            "defaultAddress": {
+                "name": "John Doe ",
+                "0": "Doe",
+                "company": "Johne Doe Inc.",
+                "taxId": "",
+                "street": "Example street",
+                "city": "Moscow",
+                "zip": "50002",
+                "state": "-",
+                "country": {
+                    "iso": "RU",
+                    "name": "Russia"
+                },
+                "phone": "+9607658358"
+            },
+            "consolidation": {
+                "consolidateTo": "new",
+                "afterConsolidation": "KEEP_IN_MAILBOX",
+                "specialRequestOpen": false,
+                "shipping": {
+                    "method": null,
+                    "address":  {
+                        "name": "John Doe ",
+                        "0": "Doe",
+                        "company": "",
+                        "taxId": "",
+                        "street": "Example street",
+                        "city": "Moscow",
+                        "zip": "50002",
+                        "state": "-",
+                        "country": {
+                            "iso": "RU",
+                            "name": "Russia"
+                        },
+                        "phone": "+9607658358"
+                    },
+                    "insurance": false
+                },
+                "box": {
+                    "size": "26_13_13",
+                    "returnToMailboxIfDoesNotFit": false
+                }
+            }
+        }
+
+## /api/v1/consolidations/{consolidationNumber}
+### GET
+Consolidation detail
+
++ Response 200 (application/json)
+
+        {
+            "id": 54,
+            "consolidateTo": "RR",
+            "continuousConsolidation": false,
+            "date": 1388520621000,
+            "warehouse": {
+                "id": 7,
+                "name": "Torrance"
+            },
+            "status": "NEW",
+            "afterConsolidation": "KEEP_IN_MAILBOX",
+            "box": {
+                "size": "26_13_13",
+                "otherSize": "",
+                "returnToMailboxIfDoesNotFit": true
+            },
+            "shipping": {
+                "method": null,
+                "address":  {
+                    "name": "John Doe ",
+                    "0": "Doe",
+                    "company": "John Doe inc.",
+                    "taxId": "",
+                    "street": "Example street",
+                    "city": "Moscow",
+                    "zip": "50002",
+                    "state": "-",
+                    "country": {
+                        "iso": "RU",
+                        "name": "Russia"
+                    },
+                    "phone": "+9607658358"
+                },
+                "insurance": false
+            },
+            "contains": [
+                {
+                    "id": "QT",
+                    "dimensions": {
+                        "width": 6.5,
+                        "height": 0.5,
+                        "length": 11.5
+                    },
+                    "weight": 0.25,
+                    "totalValue": 536,
+                    "warehouse": 7,
+                    "openConsolidation": false,
+                    "customsDeclaration": true,
+                    "mailoutScheduled": false,
+                    "packaging": "b",
+                    "selected": true
+                },
+                {
+                    "id": "RG",
+                    "dimensions": {
+                        "width": 0,
+                        "height": 0,
+                        "length": 0
+                    },
+                    "weight": 0.3,
+                    "totalValue": 2,
+                    "warehouse": 7,
+                    "openConsolidation": false,
+                    "customsDeclaration": true,
+                    "mailoutScheduled": false,
+                    "packaging": "b",
+                    "selected": true
+                }
+            ],
+            "packages": []
+        }
+
+### DELETE
+Cancel consolidation
+
++ Response 200 (application/json)
+
+        {
+            "id": 42
+        }
+
+### PUT
+Update a consolidation package
+
++ Request (application/json)
+
+        {
+            "packages": [
+                {
+                    "id": "RG",
+                    "packaging": "a"
+                },
+                {
+                    "id": "RS",
+                    "packaging": "b"
+                }
+            ],
+            "afterConsolidation": "SEND_IMMEDIATELY",
+            "box": {
+                "size": "26_13_13",
+                "otherSize": "",
+                "returnToMailboxIfDoesNotFit": true
+            },
+            "specialRequest": "Lorem ipsum",
+            "shipping": {
+                "method": "TNT_EXPRESS",
+                "insurance": true,
+                "address": {
+                    "company": "",
+                    "taxId": "",
+                    "name": "Jim Example",
+                    "street": "Example street",
+                    "zip": "15400",
+                    "city": "Prague",
+                    "country": {
+                        "iso": "CZ",
+                        "name": "Czech republic"
+                    },
+                    "state": "",
+                    "phone": "+420 344555788",
+                    "reason": ""
+                }
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 54
+        }
+
+# Group Documents
+## /api/v1/documents
+### POST
+Upload a document photo
+
++ Request (multipart/form-data; boundary=---boundary---)
+
+        {
+            "category": "id1",
+            "description": "",
+            "otherNameId": "",
+            "file": "multipart file..."
+        }
+
++ Response 201
+
+# Group Programs
+## /api/v1/programs
+### GET
+List of offered programs
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 2,
+                "name": "Individual Packages",
+                "description": "Basic service - you are charged for sent packages only.\r\n<ul>\r\n<li>\r\nMailout fee is $8.50 + postage. \r\n<\/li>\r\n<li>\r\nFree storage for 90 days. \r\n<\/li>\r\n<li>\r\nConsolidation of packages is not possible.\r\n<\/li>\r\n<li>One package at a time in the mailbox<\/li>\r\n<\/ul>",
+                "price": 0
+            },
+            {
+                "id": 13,
+                "name": "NEW Virtual Mailbox ANNUAL",
+                "description": "<ul>\r\n<li>$2.50 processing fee + postage<\/li>\r\n<li>Processing fee is paid for each package received. No mail out fee.<\/li>\r\n<li>Free storage for up to 90 days<\/li>\r\n<li>Consolidation available (save on postage)<\/li>\r\n<\/ul>",
+                "price": 50
+            },
+            {
+                "id": 14,
+                "name": "NEW Virtual Mailbox MONTHLY",
+                "description": "The same services and fees as New Virtual Mailbox. Pay $10\/month instead of $50\/year.",
+                "price": 10
+            },
+            {
+                "id": 4,
+                "name": "OLD Virtual Mailbox ANNUAL",
+                "description": "<ul>\r\n<li>\r\n$8.50 Mail Out fee + postage\r\n<\/li>\r\n<li>\r\nFree storage for up to 90 days.\r\n<\/li>\r\n<li>\r\nConsolidation available (save on postage)\r\n<\/li>\r\n\r\n<\/ul>",
+                "price": 100
+            },
+            {
+                "id": 7,
+                "name": "OLD Virtual Mailbox MONTHLY",
+                "description": "The same services and fees as Virtual Mailbox. Pay $20\/month instead of $100\/year.",
+                "price": 20
+            }
+        ]
+
+### POST
++ Request (application/json)
+
+        {
+            "programId": 7
+        }
+
++ Response 204
+
