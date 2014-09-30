@@ -346,6 +346,44 @@ Transaction statement
                 "subtotal": 1593.72
             }
         ]
+        
+## Default address [/api/v1/default-address]
+### GET
++ Response 200 (application/json)
+
+        {
+            "name": "John Doe",
+            "company": "John Doe",
+            "taxId": "",
+            "street": "Street 15",
+            "city": "King's Landing",
+            "zip": "3G",
+            "state": "State",
+            "country": {
+                "iso": "7K",
+                "name": "the Seven Kingdoms"
+            }
+            "phone": "3256987412"
+        }
+        
+### PUT
+
++ Request (application/json)
+
+        {
+            "firstName": "My",
+            "lastName": "New",
+            "company": "",
+            "taxId": "",
+            "street": "Golden Street 21",
+            "zip": "3G",
+            "city": "King's Landing",
+            "state": "",
+            "country": "7K",
+            "phone": ""
+        }
+
++ Response 204        
 
 # Group Deposit
 ## /api/v1/deposits
