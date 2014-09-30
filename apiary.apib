@@ -290,16 +290,11 @@ Set user general settings
             "newsletter": true
         }
 
-+ Response 200
-    + Headers
++ Response 200 (application/json)
 
-            Content-type: application/json
-
-    + Body
-
-            {
-                "code": 0
-            }
+        {
+            "code": 0
+        }
 
 ## /api/v1/settings/change-password
 ### POST
@@ -312,16 +307,11 @@ Change password
             "newPassword": "987654321"
         }
 
-+ Response 200
-    + Headers
++ Response 200 (application/json)
 
-            Content-type: application/json
-
-    + Body
-
-            {
-                "code": 0
-            }
+        {
+            "code": 0
+        }
 
 ## /api/v1/settings/change-email
 ### POST
@@ -566,39 +556,34 @@ Set last seen news
 ### GET
 List of user benefits
 
-+ Response 200
-    + Headers
++ Response 200 (application/json)
 
-            Content-type: application/json
-
-    + Body
-
-            {
-                "points": 15.59,
-                "benefits": [
-                    {
-                        "id": 123,
-                        "description": "FedEx Priority: 5% Discount from Tualatin, OR warehouse",
-                        "availableUntil": 1279664150000,
-                        "warehouse": {
-                            "id": 123, 
-                            "name": "Tualatin", 
-                            "state": "CA"
-                        },
-                        "shippingCountry": {
-                            "id": 123, 
-                            "name": "Brazil"
-                        }
+        {
+            "points": 15.59,
+            "benefits": [
+                {
+                    "id": 123,
+                    "description": "FedEx Priority: 5% Discount from Tualatin, OR warehouse",
+                    "availableUntil": 1279664150000,
+                    "warehouse": {
+                        "id": 123, 
+                        "name": "Tualatin", 
+                        "state": "CA"
                     },
-                    {
-                        "id": 124,
-                        "description": "FedEx Priority: 10% Discount from Tualatin, OR warehouse",
-                        "availableUntil": 1279664150000,
-                        "warehouse": null,
-                        "shippingCountry": null
+                    "shippingCountry": {
+                        "id": 123, 
+                        "name": "Brazil"
                     }
-                ]
-            }
+                },
+                {
+                    "id": 124,
+                    "description": "FedEx Priority: 10% Discount from Tualatin, OR warehouse",
+                    "availableUntil": 1279664150000,
+                    "warehouse": null,
+                    "shippingCountry": null
+                }
+            ]
+        }
 
 ## /api/v1/benefits/select
 ### POST
@@ -1195,16 +1180,11 @@ Cancel mailout
 ### POST
 Set note
 
-+ Request
-    + Headers
++ Request (application/json)
 
-            Conten-Type: application/json
-
-    + Body
-
-            {
-                "note": "Comment of package"
-            }
+        {
+            "note": "Comment of package"
+        }
 
 + Response 200
 
