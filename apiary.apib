@@ -22,6 +22,20 @@ Authentication request
         }
 
 + Response 204
+        
++ Response 400 (application/json)
+
+        {
+            "code": 11,
+            "message": "User not found.",
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "code": 12,
+            "message": "Invalid password.",
+        }
 
 ## Logout [/api/v1/logout]
 ### GET
