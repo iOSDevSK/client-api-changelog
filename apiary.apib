@@ -482,7 +482,7 @@ List of packages to which a claim/issue can be posted
             "packages": ["LP", "MB", "PO", "JK", "DC", "DM", "TK", "XP"]
         }
 
-## /api/v1/issues/package-detail/{letterId}
+## /api/v1/issues/package-detail/{packageId}
 ### GET
 Package details needed for creating an issue
 
@@ -984,7 +984,7 @@ List packages which have been already sent
             }
         ]
 
-## /api/v1/packages/{letterId}
+## /api/v1/packages/{packageId}
 ### GET
 Get a single package
 thumbnail: 63x50
@@ -1138,7 +1138,7 @@ status: delivered | mailed | in-transit | ready-to-send | check-status
             ]
         }
 
-## /api/v1/packages/{letterId}/confirm-delivery
+## /api/v1/packages/{packageId}/confirm-delivery
 ### POST
 Confirms delivery of a package to a customer
 
@@ -1218,7 +1218,7 @@ Updates customs declaration for given package
 
 + Response 201
 
-## /api/v1/packages/{letterId}/shipping-address
+## /api/v1/packages/{packageId}/shipping-address
 ### POST
 Updates shipping address for given package
 
@@ -1240,7 +1240,7 @@ Updates shipping address for given package
 
 + Response 200
 
-## /api/v1/packages/{letterId}/special-requests
+## /api/v1/packages/{packageId}/special-requests
 ### GET
 List specific requests which are available for given package
 
@@ -1333,7 +1333,7 @@ Gets a list of available shipping methods for given package
             }
         ]
 
-## /api/v1/packages/{letterId}/shipping-methods
+## /api/v1/packages/{packageId}/shipping-methods
 ### POST
 Selects shipping method for given package
 
@@ -1347,7 +1347,7 @@ Selects shipping method for given package
 
 + Response 200
 
-## /api/v1/packages/{letterId}/transport
+## /api/v1/packages/{packageId}/transport
 ### POST
 Request package transfer to another warehouse
 
@@ -1367,7 +1367,7 @@ Cancel transfer of a package into another warehouse
 
 + Response 200
 
-## /api/v1/packages/{letterId}/transport-shipping-rates/{locationId}
+## /api/v1/packages/{packageId}/transport-shipping-rates/{locationId}
 ### GET
 Get rates for moving a package into a different warehouse
 
