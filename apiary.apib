@@ -5,6 +5,8 @@ You have to send "X-token" header in every request, otherwise you'll get error 4
 You should receive value for this token in email with registration.
 First request you have to send is /api/v1/authenticate, it will generate cookie for you with valid session.
 
+If you send an unauthenticated request to any other url but /api/v1/authenticate, you receive error 401 - {"code": 10, "message": "Authentication needed."}
+
 Url for all requests is https://client-api.shipito.com/
 
 Example in PHP https://github.com/Shipito/client-api-example
