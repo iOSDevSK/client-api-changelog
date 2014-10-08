@@ -1249,6 +1249,50 @@ Updates shipping address for given package
 
 + Response 200
 
+## /api/v1/packages/special-requests
+
+### GET
+List of applicable special requests.
+
++ Response 200 (application/json)
+
+        {
+            "requests": [
+                {
+                    "id": 4,
+                    "fee": 5,
+                    "label": "Open the package and fill customs declaration",
+                    "description": "Open the package, and according to invoice, fill customs declaration. If there is no invoice in the package, fill only content description."
+                },
+                {
+                    "id": 8,
+                    "fee": 0,
+                    "label": "Trash this package",
+                    "description": ""
+                },
+                {
+                    "id": 9,
+                    "fee": 5,
+                    "label": "Express processing",
+                    "description": "Process this package in preference ASAP."
+                },
+                {
+                    "id": 15,
+                    "fee": 2,
+                    "label": "One Photo Request",
+                    "description": "Shipito will open your package and take one photo of the content. This is the least expensive photo request which will give you an idea what items are included in your package. Do not expect detailed shoots. Typically it is one photo showing all items contained in the package spread on the desk.  If the content of package does not fit in the area of 36×36 inches we will automatically charge for multiple photo request."
+                },
+                {
+                    "id": 17,
+                    "fee": 5,
+                    "label": "Multiple Photo Request",
+                    "description": "You will get more close up and detailed photos of items in the package. We will also take photo of the invoice or packing list (if enclosed). We will also take photo of labels on the clothes so you can check if you are getting correct sizes. This can also show model number on iPad or computer. We will also take IMEI number on your iPhone for better security (based on suggestion from one of our customers)."
+                }
+            ]
+        }
+
+
+
 ## /api/v1/packages/{packageId}/special-requests
 ### GET
 List specific requests which are available for given package
