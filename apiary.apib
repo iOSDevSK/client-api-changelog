@@ -606,6 +606,19 @@ Select
         []
 
 # Group Packages
+
+## Package status
+| Status        | Description                                                                                                                                                                                                                           |
+|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| delivered     | Customer has confirmed package delivery. (See [POST /packages/{packageId}/confirm-delivery](http://docs.shipitoclientaccount2.apiary.io/#post-%2Fapi%2Fv1%2Fpackages%2F{packageId}%2Fconfirm-delivery)).                              |
+| mailed        | Package was passed to the selected carrier and is no longer in our warehouse.                                                                                                                                                             |
+| in-transit    | Package is being transported between our warehouses.                                                                                                                                                                                  |
+| ready-to-send | Customs declaration is filled, carrier is selected and user asked to mailout the package (see [POST /packages/{packageId}/mailout](http://docs.shipitoclientaccount2.apiary.io/#post-%2Fapi%2Fv1%2Fpackages%2F{packageId}%2Fmailout)) |
+| merged        | Package was physically consolidated into another box, it ceases to exist on its own thus it won't show neither in list of sent packages nor those in warehouse. It's detail is accessible and it's consolidation contains a link to it. |
+| in-warehouse  | Package is stored in our warehouse. Customs may or may not be filled and the same goes for shipping method.                                                                                                                           |
+| trashed       | Package was trashed.                                                                                                                                                                                                                  |
+| check-status  | There's been trouble with the package and user should contact our customer support about it.                                                                                                                 |
+
 ## /api/v1/packages?filter=in-warehouse
 ### GET
 List packages which are in a warehouse
