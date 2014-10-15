@@ -73,7 +73,8 @@ Dashboard data
                     "name": "Minden, NV",
                     "recommended": true,
                     "address": {
-                        "name": "John Doe",
+                        "firstName": "John",
+                        "lastName": "Doe",
                         "address": "2220 Meridian Blvd",
                         "suite": "Suite #",
                         "city": "Minden, NV",
@@ -87,7 +88,8 @@ Dashboard data
                     "name": "Tualatin, OR",
                     "recommended": false,
                     "address": {
-                        "name": "John Doe",
+                        "firstName": "John",
+                        "lastName": "Doe",
                         "address": "11407 SW Amu St.",
                         "suite": "Suite #",
                         "city": "Tualatin, OR",
@@ -101,7 +103,8 @@ Dashboard data
                     "name": "Torrance, CA",
                     "recommended": false,
                     "address": {
-                        "name": "John Doe",
+                        "firstName": "John",
+                        "lastName": "Doe",
                         "address": "4310 W. 190th St.",
                         "suite": "Suite #",
                         "city": "Torrance, CA",
@@ -113,7 +116,8 @@ Dashboard data
             ],
             "shipping": {
                 "address": {
-                    "name": "John Doe",
+                    "firstName": "John",
+                    "lastName": "Doe",
                     "company": "John Doe Inc.",
                     "taxId": "1234",
                     "address": "Example street",
@@ -157,7 +161,8 @@ List of user other names
         [
             {
                 "id": 1,
-                "name": "Jim Example",
+                "firstName": "Jim",
+                "lastName": "Example",
                 "address": "Example street 2",
                 "city": "Example City 1",
                 "zip": "15400",
@@ -168,7 +173,8 @@ List of user other names
             },
             {
                 "id": 42,
-                "name": "Jane Foo",
+                "firstName": "Jane",
+                "lastName": "Foo",
                 "address": "Somewhere 132",
                 "city": "Prague",
                 "zip": "15400",
@@ -193,7 +199,8 @@ Add other name
 + Request (application/json)
 
         {
-            "name": "Chrochtos Prdoch",
+            "firstName": "Chrochtos",
+            "lastName": "Prdoch",
             "address": "Main square 3",
             "city": "Coruscant",
             "zip": "777GC",
@@ -208,7 +215,8 @@ Add other name
 + Request (application/json)
 
         {
-            "name": "Chrochtos Prdoch",
+            "firstName": "Chrochtos",
+            "lastName": "Prdoch",
             "address": "Main square 3",
             "city": "Coruscant",
             "zip": "777GC",
@@ -338,7 +346,8 @@ Transaction statement
 + Response 200 (application/json)
 
         {
-            "name": "John Doe",
+            "firstName": "John",
+            "lastName": "Doe",
             "company": "John Doe",
             "taxId": "",
             "address": "Madison Ave 1",
@@ -1051,7 +1060,8 @@ status: delivered | mailed | in-transit | ready-to-send | check-status
                 "deliveryDate": 1380647532000,
                 "availableStorage": 70,
                 "incommingTrackingNumber": "201113554689AC65434",
-                "recepientName": "Alexander Sergeyeich",
+                "recipientFirstName": "Alexander",
+                "recipientLastName": "Sergeyeich",
                 "transportCost": 42,
                 "outgoingTrackingNumber": "1020388026147340100767",
                 "mailedOut": 1380647532000,
@@ -1107,7 +1117,8 @@ status: delivered | mailed | in-transit | ready-to-send | check-status
             },
             "shipping": {
                 "address": {
-                    "name": "Tom Doo",
+                    "firstName": "Tom",
+                    "lastName": "Doo",
                     "company": null,
                     "taxId": null,
                     "address": "Example street",
@@ -1538,7 +1549,8 @@ Create a consolidation package
                 "address": {
                     "company": "",
                     "taxId": "",
-                    "name": "John Doe",
+                    "firstName": "John",
+                    "lastName": "Doe",
                     "address": "Example street",
                     "zip": "15400",
                     "city": "Praha",
@@ -1624,8 +1636,8 @@ Detail request for edit
                 }
             ],
             "defaultAddress": {
-                "name": "John Doe ",
-                "0": "Doe",
+                "firstName": "John",
+                "lastName": "Doe",
                 "company": "Johne Doe Inc.",
                 "taxId": "",
                 "address": "Example street",
@@ -1642,8 +1654,8 @@ Detail request for edit
                 "shipping": {
                     "method": null,
                     "address":  {
-                        "name": "John Doe ",
-                        "0": "Doe",
+                        "firstName": "John",
+                        "lastName": "Doe",
                         "company": "",
                         "taxId": "",
                         "address": "Example street",
@@ -1687,8 +1699,8 @@ Consolidation detail
             "shipping": {
                 "method": null,
                 "address":  {
-                    "name": "John Doe ",
-                    "0": "Doe",
+                    "firstName": "John",
+                    "lastName": "Doe",
                     "company": "John Doe inc.",
                     "taxId": "",
                     "address": "Example street",
@@ -1775,7 +1787,8 @@ Update a consolidation package
                 "address": {
                     "company": "",
                     "taxId": "",
-                    "name": "Jim Example",
+                    "firstName": "Jim",
+                    "lastName": "Example",
                     "address": "Example street",
                     "zip": "15400",
                     "city": "Prague",
