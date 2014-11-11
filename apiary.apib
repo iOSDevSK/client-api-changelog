@@ -24,14 +24,14 @@ Authentication request
         }
 
 + Response 204
-        
+
 + Response 401 (application/json)
 
         {
             "code": 11,
             "message": "Invalid credentials.",
         }
-        
+
 ## Logout [/api/v1/logout]
 ### GET
 Logs user out
@@ -112,7 +112,7 @@ Dashboard data
                         "country": "US"
                     },
                     "info": "All shipping methods available. Consolidation available. Do not use for shipping pallets or huge packages. Low shipping cost and fast speed due to proximity to LAX airport. <a href=\"http://www.shipito.com/locations\">More details.</a>"
-                }       
+                }
             ],
             "shipping": {
                 "address": {
@@ -268,7 +268,7 @@ Returns user general settings
             },
             "newsletter": true
         }
-        
+
 ### POST
 Set user general settings
 
@@ -340,7 +340,7 @@ Transaction statement
                 "subtotal": 1593.72
             }
         ]
-        
+
 ## Default address [/api/v1/default-address]
 ### GET
 + Response 200 (application/json)
@@ -357,7 +357,7 @@ Transaction statement
             "country": "US",
             "phone": "3256987412"
         }
-        
+
 ### PUT
 
 + Request (application/json)
@@ -375,7 +375,7 @@ Transaction statement
             "phone": "3256987412"
         }
 
-+ Response 204        
++ Response 204
 
 # Group Deposit
 ## /api/v1/deposits
@@ -557,7 +557,7 @@ News
             }
         ]
 
-## /api/v1/seen-news
+## /api/v1/news/seen
 ### POST
 Set last seen news
 
@@ -584,8 +584,8 @@ List of user benefits
                     "description": "FedEx Priority: 5% Discount from Tualatin, OR warehouse",
                     "availableUntil": 1279664150000,
                     "warehouse": {
-                        "id": 123, 
-                        "name": "Tualatin", 
+                        "id": 123,
+                        "name": "Tualatin",
                         "state": "CA"
                     },
                     "shippingCountry": "BR"
@@ -979,7 +979,7 @@ List packages which have been already sent
                     "length": 300
                 },
                 "deliveryDate": 1378788198000,
-                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",     
+                "note": "Sweet roll ice cream gummies bonbon topping dessert sweet roll. Powder dragee pudding marzipan sweet roll candy powder fruitcake.",
                 "trackingNumber": "1Z7F382V0215698550",
                 "outgoingTrackingNumber": "SAE98765432",
                 "totalPrice": 132,
@@ -1129,7 +1129,7 @@ status: delivered | mailed | in-transit | ready-to-send | check-status
                     "phone": "+420344555788"
                 },
                 "method": {
-                    "alias": "FEDEX_2_DAY", 
+                    "alias": "FEDEX_2_DAY",
                     "name": "Fedex 2Day"
                 },
                 "insurance": "delivery_damage"
@@ -1559,7 +1559,7 @@ Create a consolidation package
                     "phone": "+420 344555788",
                     "reason": ""
                 }
-            } 
+            }
         }
 
 + Response 200 (application/json)
