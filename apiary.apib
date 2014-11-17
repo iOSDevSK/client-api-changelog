@@ -1153,14 +1153,12 @@ status: delivered | mailed | in-transit | ready-to-send | check-status
                         "quantity": 1,
                         "description": "Audi RS5",
                         "origin": "DE",
-                        "hscode": "",
                         "value": 10
                     },
                     {
                         "quantity": 2,
                         "description": "Audi A4",
                         "origin": "DE",
-                        "hscode": "",
                         "value": 10
                     }
                 ]
@@ -1264,10 +1262,10 @@ Gets customs declaration of given package
 
         {
             "items": [
-                { "quantity": 1, "description": "Kindle", "origin": "US", "hscode": 1256, "value": 100 },
-                { "quantity": 3, "description": "KitKat", "origin": "US", "hscode": 1111, "value": 251 },
-                { "quantity": 2, "description": "iPad", "origin": "CZ", "hscode": 1200, "value": 499 },
-                { "quantity": 1, "description": "iPhone", "origin": "US", "hscode": 5656, "value": 50 }
+                { "quantity": 1, "description": "Kindle", "origin": "US", "value": 100 },
+                { "quantity": 3, "description": "KitKat", "origin": "US", "value": 251 },
+                { "quantity": 2, "description": "iPad", "origin": "CZ", "value": 499 },
+                { "quantity": 1, "description": "iPhone", "origin": "US", "value": 50 }
             ],
             "type": "gift",
             "dangerousMaterials": {
@@ -1284,8 +1282,8 @@ Updates customs declaration for given package
 
         {
             "items": [
-                { "quantity": 2, "description": "Kindle", "origin": "US", "hscode": 1256, "value": 230},
-                { "quantity": 1, "description": "iPhone", "origin": "US", "hscode": 5656, "value": 50 }
+                { "quantity": 2, "description": "Kindle", "origin": "US", "value": 230},
+                { "quantity": 1, "description": "iPhone", "origin": "US", "value": 50 }
             ],
             "type": "gift|merchandise",
             "dangerousMaterials": {
