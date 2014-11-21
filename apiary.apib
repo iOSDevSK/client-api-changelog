@@ -379,66 +379,6 @@ Transaction statement
 
 + Response 204
 
-# Group Deposit
-## /api/v1/deposits
-### POST
-Create a deposit order
-
-+ Request (application/json)
-
-        {
-            "amount": 10
-        }
-
-+ Response 201 (application/json)
-
-        {
-            "id": "1951185",
-            "amount": 16,
-            "paymentMethods": {
-                "creditCard": true,
-                "paypal": true,
-                "wireTransfer": true,
-                "shipitoPartner": true
-            }
-        }
-
-## /api/v1/deposits/{orderId}/paypal-payment
-### POST
-Pay deposit by PayPal
-
-+ Request (application/json)
-
-        {
-            "amount": 10
-        }
-
-+ Response 204
-
-## /api/v1/deposits/{orderId}/shipito-partner-payment
-### POST
-Pay deposit by Shipito Partner
-
-+ Request (application/json)
-
-        {
-            "amount": 10
-        }
-
-+ Response 204
-
-## /api/v1/deposits/{orderId}/wire-transfer-payment
-### POST
-Pay deposit by wire transfer
-
-+ Request (application/json)
-
-        {
-            "amount": 10
-        }
-
-+ Response 204
-
 # Group Issues
 ## /api/v1/issues
 ### GET
