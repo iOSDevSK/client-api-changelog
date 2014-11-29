@@ -1299,7 +1299,33 @@ Updates customs declaration for given package
             }
         }
 
-+ Response 201
++ Response 201 (application/json)
+
+        {
+            "id": "{packageId}",
+            "totalValue": "280",
+            "changeShippingMethod": true,
+            "items": [
+                    {
+                        "quantity": 2,
+                        "description": "Kindle",
+                        "origin": "US",
+                        "value": 230
+                    },
+                    {
+                        "quantity": 1,
+                        "description": "iPhone",
+                        "origin": "US",
+                        "value": 50
+                    }
+                ],
+            "type": "gift",
+            "dangerousMaterials": {
+                "PI966": true,
+                "PI967": true,
+                "PI965": true
+            }
+        }
 
 ## /api/v1/packages/{packageId}/shipping-address
 ### POST
