@@ -209,7 +209,29 @@ Add other name
             "phone": "+232444555111"
         }
 
-+ Response 200
++ Response 200 (application/json)
+
+
+            {
+                "id": 42,
+                "firstName": "Chrochtos",
+                "lastName": "Prdoch",
+                "address": "Main square 3",
+                "city": "Coruscant",
+                "zip": "777GC",
+                "country": "CZ",
+                "phone": "+232444555111",
+                "verify": false,
+                "missingDocuments": [
+                    "form1583",
+                    "form1583_notarized",
+                    "id1",
+                    "id2",
+                    "utility",
+                    "other",
+                    "card"
+                ]
+            }
 
 ## /api/v1/other-names/{otherNameId}
 ### Edit other name [PUT]
