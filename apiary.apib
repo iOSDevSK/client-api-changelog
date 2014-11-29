@@ -1237,11 +1237,102 @@ Undoes delivery confirmation.
 
 + Response 204
 
-## /api/v1/packages/{packageId}/mailout
-### POST
-Request mailout
+## /api/v1/packages/{packageId}/mailout/special-requests
+### GET
+Information about available / selected mailout special requests.
 
-+ Response 200
+Statuses: available / new / processing / completed / canceled (usually you'll run only into available, new and completed).
+
++ Response 200 (application/json)
+
+        [
+            {
+                "alias": "extra_tape",
+                "name": "Extra Tape",
+                "info": "Put extra tape on the package seams",
+                "additionalInfo": null,
+                "additionalInfoRequired": false,
+                "fee": 1,
+                "status": "available"
+            },
+            {
+                "alias": "security_tape",
+                "name": "Security Tape",
+                "info": "Put security tape on the package, so it's evident if the package has been opened after shipping",
+                "additionalInfo": null,
+                "additionalInfoRequired": false,
+                "fee": 2,
+                "status": "available"
+            },
+            {
+                "alias": "fragile_sticker",
+                "name": "Fragile Sticker",
+                "info": "Put fragile sticker onto the package, so it's clear package contains fragile items.",
+                "additionalInfo": null,
+                "additionalInfoRequired": false,
+                "fee": 1,
+                "status": "available"
+            },
+            {
+                "alias": "express_mailout",
+                "name": "Express Mailout",
+                "info": "Your Mailout Request will be moved to the top of the queue.",
+                "additionalInfo": null,
+                "additionalInfoRequired": false,
+                "fee": 2,
+                "status": "available"
+            },
+            {
+                "alias": "mailout_photo",
+                "name": "Mailout Photo",
+                "info": "Take a photo of the package before giving it to the shipping company",
+                "additionalInfo": null,
+                "additionalInfoRequired": false,
+                "fee": 2,
+                "status": "available"
+            }
+        ]
+
+## /api/v1/packages/{packageId}/mailout
+
+### POST
+Request mailout.
+
+Field lastMinuteSpecialRequests is optional. On every mailout request previous special requests are canceled and new applied, use aliases from /packages/{packageId}/mailout/special-requests as keys and true / false as values. If a special request requires additional info, use string instead of true.
+
++ Request (application/json)
+
+        {
+            "lastMinuteSpecialRequests": {
+                "express_mailout": true,
+                "mailout_photo": true
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "lastMinuteSpecialRequests": [
+                 {
+                     "alias": "express_mailout",
+                     "name": "Express Mailout",
+                     "info": "Your Mailout Request will be moved to the top of the queue.",
+                     "additionalInfo": null,
+                     "additionalInfoRequired": false,
+                     "fee": 2,
+                     "status": "new"
+                 },
+                 {
+                     "alias": "mailout_photo",
+                     "name": "Mailout Photo",
+                     "info": "Take a photo of the package before giving it to the shipping company",
+                     "additionalInfo": null,
+                     "additionalInfoRequired": false,
+                     "fee": 2,
+                     "status": "new"
+                 }
+             ]
+        }
 
 ### DELETE
 Cancel mailout
