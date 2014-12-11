@@ -2143,6 +2143,56 @@ Upload a document photo
             "time": 1418325026000,
             "status": "pending"
         }
+        
+## /api/v1/documents/categories
+### Retrieve a list of verification document categories list [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "alias": "id1",
+                "status": "pending",
+                "percentage": 15,
+                "isDocument": true
+            },
+            {
+                "alias": "id2",
+                "status": "pending",
+                "percentage": 15,
+                "isDocument": true
+            },
+            {
+                "alias": "form1583",
+                "status": "pending",
+                "percentage": 10,
+                "isDocument": true
+            },
+            {
+                "alias": "form1583_notarized",
+                "status": "verified",
+                "percentage": 40,
+                "isDocument": true
+            },
+            {
+                "alias": "utility",
+                "status": "pending",
+                "percentage": 30,
+                "isDocument": true
+            },
+            {
+                "alias": "wire_transfer",
+                "status": "not verified",
+                "percentage": 40,
+                "isDocument": false
+            },
+            {
+                "alias": "card_verified",
+                "status": "not verified",
+                "percentage": 20,
+                "isDocument": false
+            }
+        ]
 
 # Group Programs
 ## /api/v1/programs
