@@ -2100,12 +2100,20 @@ Upload a document photo
 
         {
             "category": "id1",
-            "description": "",
+            "description": "Mountain of bacon.",
             "otherNameId": "",
             "file": "multipart file..."
         }
 
-+ Response 201
++ Response 201 (application/json)
+
+        {
+            "id": 228203,
+            "category": "id1",
+            "description": "Mountain of bacon."
+            "time": 1418325026000,
+            "status": "pending"
+        }
 
 # Group Programs
 ## /api/v1/programs
