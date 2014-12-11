@@ -2093,6 +2093,35 @@ Update a consolidation package
 
 # Group Documents
 ## /api/v1/documents
+
+### Retrieve a list of uploaded documents and their status [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                    "id": 228193,
+                    "category": "form1583",
+                    "description": "",
+                    "time": 1387220812000,
+                    "status": "verified"
+                },
+                {
+                    "id": 228194,
+                    "category": "utility",
+                    "description": "",
+                    "time": 1387220812000,
+                    "status": "rejected"
+                },
+                {
+                    "id": 228203,
+                    "category": "id1",
+                    "description": "my id",
+                    "time": 1418325026000,
+                    "status": "pending"
+                }
+        ]
+
 ### POST
 Upload a document photo
 
