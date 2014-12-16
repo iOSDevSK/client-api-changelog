@@ -581,16 +581,59 @@ Select
 # Group Packages
 
 ## Package status
-| Status        | Description                                                                                                                                                                                                                           |
-|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| delivered     | Customer has confirmed package delivery. (See [POST /packages/{packageId}/confirm-delivery](http://docs.shipitoclientaccount2.apiary.io/#post-%2Fapi%2Fv1%2Fpackages%2F{packageId}%2Fconfirm-delivery)).                              |
-| mailed        | Package was passed to the selected carrier and is no longer in our warehouse.                                                                                                                                                             |
-| in-transit    | Package is being transported between our warehouses.                                                                                                                                                                                  |
-| ready-to-send | Customs declaration is filled, carrier is selected and user asked to mailout the package (see [POST /packages/{packageId}/mailout](http://docs.shipitoclientaccount2.apiary.io/#post-%2Fapi%2Fv1%2Fpackages%2F{packageId}%2Fmailout)) |
-| merged        | Package was physically consolidated into another box, it ceases to exist on its own thus it won't show neither in list of sent packages nor those in warehouse. It's detail is accessible and it's consolidation contains a link to it. |
-| in-warehouse  | Package is stored in our warehouse. Customs may or may not be filled and the same goes for shipping method.                                                                                                                           |
-| trashed       | Package was trashed.                                                                                                                                                                                                                  |
-| check-status  | There's been trouble with the package and user should contact our customer support about it.                                                                                                                 |
+Primary package status is derived from current location of the parcel.
+
+| Status | Description |
+|:-------------|:-------------------------------------------------------------------------------|
+| in warehouse | Package is in one of our warehouses or on a way from one warehouse to another. |
+| merged | Parcel was consolidated into another box, it stopped existing on its own. |
+| sent | Package was passed to selected carrier. |
+| trashed | Parcel was trashed. |
+
+Secondary status is expressed using boolean flags.
+
+| Flag | Description |
+|:-----|:------------|
+| customsDeclarationFilled | True if customs declaration has been filled in. |
+| sufficientDeposit | True when the total price for sending a package is lower or equal to current deposit. |
+| specialRequestInProgress | True for packages which have some unfinished special request(s). |
+| onSecurityHold | True if customer's account has been put on security hold. See http://www.shipito.com/faq#security. |
+| receivedUnderOtherName | True if account holder wasn't package recipient. See http://www.shipito.com/faq#additionalnames. |
+| otherNameVerified | True when receivedUnderOtherName is true and the other name is verified. |
+| shippingMethodSelected | True for packages with a shipping method selected. |
+| insuranceSelected | True for packages with an insurance option selected. |
+| measured | True if a package has been measured. There is usually a small time gap between a package receipt and measuring its dimensions. |
+| weighted | True if a package has been weighted. There may be a time gap between measuring the size and getting its weight. |
+| requiresTaxId | True if current combination of carrier and delivery country requires tax id filled in the shipping address. |
+| hasTaxId | True if tax id is filled in. |
+| fitsMontlyLimit | True if the total price for sending a package is lower or equal to remaining monthly limit. |
+| requiresNotarizedForm1583 | True if we require a notarized form 1583 to send the package. Generally true for letters. |
+| hasNotarizedForm1583 | True for accounts with an uploaded notarized form 1583. |
+| queuedForConsolidation | True for packages which are to be consolidated. |
+| queuedForMps | True when a package is to be send in an MPS shipment. |
+| hasOpenIssue | True if there is an open claim for a package. |
+| contentPhotos | True if customer has asked us to take a content photo(s) using special requests. |
+| mailoutScheduled | True when user instructed us to mailout a package when we have all the needed information. |
+| delivered | True for packages marked as delivered. |
+| mailboxUpgradeNeeded | True for accounts with "Individual Packages" plan and more than one parcel in our warehouse. |
+| readyToSend | True when customer fills in required information, schedules a mailout and we finish all special requests. |
+
+How the "ready to send" condition works (every line needs to be equal to true, symbol || stands for or)
+* customsDeclarationFilled
+* sufficientDeposit
+* !specialRequestInProgress
+* !onSecurityHold
+* (!receivedUnderOtherName || otherNameVerified)
+* shippingMethodSelected
+* insuranceSelected
+* measured
+* weighted
+* (!requiresNotarizedForm1583 || hasNotarizedForm1583)
+* !queuedForConsolidation
+* !queuedForMps
+* !hasOpenIssue
+* mailoutScheduled
+* !mailboxUpgradeNeeded                                                                                                               |
 
 ## /api/v1/packages?filter=in-warehouse
 ### GET
@@ -605,13 +648,13 @@ List packages which are in a warehouse
                     "id": 7,
                     "name": "Torrance, CA"
                 },
-                "status": "check-status",
+                "status": "in warehouse",
                 "dimensions": {
-                    "width": 404,
-                    "height": 42,
-                    "length": 46
+                    "width": 0,
+                    "height": 0,
+                    "length": 0
                 },
-                "weight": 10,
+                "weight": 0,
                 "deliveryDate": 1378788198,
                 "trackingNumber": "1Z7F382V0215698550",
                 "outgoingTrackingNumber": "",
@@ -654,6 +697,30 @@ List packages which are in a warehouse
                         "alias": "DHL_EXPRESS",
                         "name": "DHL Express"
                     }
+                },
+                "flags": {
+                    "hasOpenIssue": false,
+                    "contentPhotos": false,
+                    "sufficientDeposit": true,
+                    "fitsMonthlyLimit": true,
+                    "shippingMethodSelected": false,
+                    "insuranceSelected": false,
+                    "customsDeclarationFilled": true,
+                    "receivedUnderOtherName": true,
+                    "otherNameVerified": false,
+                    "specialRequestInProgress": false,
+                    "requiresTaxId": false,
+                    "hasTaxId": false,
+                    "requiresNotarizedForm1583": false,
+                    "hasNotarizedForm1583": true,
+                    "onSecurityHold": false,
+                    "measured": false,
+                    "weighted": false,
+                    "queuedForConsolidation": false,
+                    "queuedForMps": false,
+                    "mailboxUpgradeNeeded": false,
+                    "mailoutScheduled": true,
+                    "readyToSend": false
                 }
             },
             {
@@ -662,7 +729,7 @@ List packages which are in a warehouse
                     "id": 7,
                     "name": "Torrance, CA"
                 },
-                "status": "check-status",
+                "status": "in warehouse",
                 "dimensions": {
                     "width": 10,
                     "height": 15,
@@ -711,7 +778,31 @@ List packages which are in a warehouse
                         "alias": "DHL_EXPRESS",
                         "name": "DHL Express"
                     }
-                }
+                },
+                 "flags": {
+                     "hasOpenIssue": false,
+                     "contentPhotos": false,
+                     "sufficientDeposit": true,
+                     "fitsMonthlyLimit": true,
+                     "shippingMethodSelected": false,
+                     "insuranceSelected": false,
+                     "customsDeclarationFilled": true,
+                     "receivedUnderOtherName": true,
+                     "otherNameVerified": false,
+                     "specialRequestInProgress": false,
+                     "requiresTaxId": false,
+                     "hasTaxId": false,
+                     "requiresNotarizedForm1583": false,
+                     "hasNotarizedForm1583": true,
+                     "onSecurityHold": false,
+                     "measured": true,
+                     "weighted": true,
+                     "queuedForConsolidation": false,
+                     "queuedForMps": false,
+                     "mailboxUpgradeNeeded": false,
+                     "mailoutScheduled": true,
+                     "readyToSend": false
+                 }
             },
             {
                 "packageId": "BC",
@@ -719,7 +810,7 @@ List packages which are in a warehouse
                     "id": 7,
                     "name": "Torrance, CA"
                 },
-                "status": "ready-to-send",
+                "status": "in warehouse",
                 "dimensions": {
                     "width": 10,
                     "height": 15,
@@ -768,6 +859,30 @@ List packages which are in a warehouse
                         "alias": "DHL_EXPRESS",
                         "name": "DHL Express"
                     }
+                },
+                "flags": {
+                    "hasOpenIssue": false,
+                    "contentPhotos": false,
+                    "sufficientDeposit": true,
+                    "fitsMonthlyLimit": true,
+                    "shippingMethodSelected": false,
+                    "insuranceSelected": false,
+                    "customsDeclarationFilled": true,
+                    "receivedUnderOtherName": true,
+                    "otherNameVerified": true,
+                    "specialRequestInProgress": false,
+                    "requiresTaxId": false,
+                    "hasTaxId": false,
+                    "requiresNotarizedForm1583": false,
+                    "hasNotarizedForm1583": true,
+                    "onSecurityHold": false,
+                    "measured": true,
+                    "weighted": true,
+                    "queuedForConsolidation": false,
+                    "queuedForMps": false,
+                    "mailboxUpgradeNeeded": false,
+                    "mailoutScheduled": true,
+                    "readyToSend": true
                 }
             },
             {
@@ -776,7 +891,7 @@ List packages which are in a warehouse
                     "id": 7,
                     "name": "Torrance, CA"
                 },
-                "status": "ready-to-send",
+                "status": "in warehouse",
                 "dimensions": {
                     "width": 0,
                     "height": 0,
@@ -822,6 +937,30 @@ List packages which are in a warehouse
                         "lastName": "Snow"
                     },
                     "method": null
+                },
+                "flags": {
+                    "hasOpenIssue": false,
+                    "contentPhotos": false,
+                    "sufficientDeposit": true,
+                    "fitsMonthlyLimit": true,
+                    "shippingMethodSelected": false,
+                    "insuranceSelected": false,
+                    "customsDeclarationFilled": true,
+                    "receivedUnderOtherName": true,
+                    "otherNameVerified": true,
+                    "specialRequestInProgress": false,
+                    "requiresTaxId": false,
+                    "hasTaxId": false,
+                    "requiresNotarizedForm1583": false,
+                    "hasNotarizedForm1583": true,
+                    "onSecurityHold": false,
+                    "measured": true,
+                    "weighted": true,
+                    "queuedForConsolidation": false,
+                    "queuedForMps": false,
+                    "mailboxUpgradeNeeded": false,
+                    "mailoutScheduled": true,
+                    "readyToSend": true
                 }
             },
             {
@@ -830,7 +969,7 @@ List packages which are in a warehouse
                     "id": 20,
                     "name": "Hawthorne, CA"
                 },
-                "status": "in-transit",
+                "status": "in warehouse",
                 "dimensions": {
                     "width": 10,
                     "height": 15,
@@ -876,6 +1015,30 @@ List packages which are in a warehouse
                         "lastName": "Snow"
                     },
                     "method": null
+                },
+                "flags": {
+                    "hasOpenIssue": false,
+                    "contentPhotos": false,
+                    "sufficientDeposit": true,
+                    "fitsMonthlyLimit": true,
+                    "shippingMethodSelected": false,
+                    "insuranceSelected": false,
+                    "customsDeclarationFilled": true,
+                    "receivedUnderOtherName": true,
+                    "otherNameVerified": true,
+                    "specialRequestInProgress": false,
+                    "requiresTaxId": false,
+                    "hasTaxId": false,
+                    "requiresNotarizedForm1583": false,
+                    "hasNotarizedForm1583": true,
+                    "onSecurityHold": false,
+                    "measured": true,
+                    "weighted": true,
+                    "queuedForConsolidation": false,
+                    "queuedForMps": false,
+                    "mailboxUpgradeNeeded": false,
+                    "mailoutScheduled": true,
+                    "readyToSend": true
                 }
             }
         ]
@@ -893,7 +1056,7 @@ List packages which have been already sent
                     "id": 7,
                     "name": "Torrance, CA"
                 },
-                "status": "mailed",
+                "status": "sent",
                 "dimensions": {
                     "width": 100,
                     "height": 200,
@@ -942,6 +1105,10 @@ List packages which have been already sent
                         "alias": "DHL_EXPRESS",
                         "name": "DHL Express"
                     }
+                },
+                "flags": {
+                    "hasOpenIssue": false,
+                    "delivered": false
                 }
             },
             {
@@ -950,7 +1117,7 @@ List packages which have been already sent
                     "id": 7,
                     "name": "Torrance, CA"
                 },
-                "status": "mailed",
+                "status": "sent",
                 "dimensions": {
                     "width": 100,
                     "height": 200,
@@ -999,6 +1166,10 @@ List packages which have been already sent
                         "alias": "DHL_EXPRESS",
                         "name": "DHL Express"
                     }
+                },
+                "flags": {
+                    "hasOpenIssue": false,
+                    "delivered": false
                 }
             },
             {
@@ -1007,7 +1178,7 @@ List packages which have been already sent
                     "id": 7,
                     "name": "Torrance, CA"
                 },
-                "status": "delivered",
+                "status": "sent",
                 "dimensions": {
                     "width": 100,
                     "height": 200,
@@ -1056,6 +1227,10 @@ List packages which have been already sent
                         "alias": "DHL_EXPRESS",
                         "name": "DHL Express"
                     }
+                },
+                "flags": {
+                    "hasOpenIssue": false,
+                    "delivered": true
                 }
             }
         ]
@@ -1200,7 +1375,7 @@ status: delivered | mailed | in-transit | ready-to-send | check-status
                     "status": "completed"
                 }
             ],
-            "status": "delivered",
+            "status": "sent",
             "note": "My note",
             "flags": {
                 "contentPhotos": true,
@@ -1209,6 +1384,10 @@ status: delivered | mailed | in-transit | ready-to-send | check-status
                 "shippingMethodSelected": false,
                 "transportPending": false,
                 "transportScheduled": false
+            },
+            "flags": {
+                "hasOpenIssue": false,
+                "delivered": true
             },
             "exceptions": [
                 "exception1",
@@ -2143,7 +2322,7 @@ Accepted mime types: image/jpeg, image/png, application/pdf
             "time": 1418325026000,
             "status": "pending"
         }
-        
+
 ## /api/v1/documents/categories
 ### Retrieve a list of verification document categories list [GET]
 
